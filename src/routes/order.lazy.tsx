@@ -80,7 +80,9 @@ function Order() {
             <div className="my-2.5 text-center w-full p-3.75 md:ml-6.25">
               <label
                 className="block text-[20px] text-secondary mb-2.5"
-                htmlFor="pizza-type">Pizza Type
+                htmlFor="pizza-type"
+              >
+                Pizza Type
               </label>
               <select
                 className="form-select block text-[16px] p-1.25 mb-7.5 w-full"
@@ -96,13 +98,16 @@ function Order() {
               </select>
             </div>
             <div className="my-2.5 text-center w-full p-3.75 md:ml-6.25">
-              <label 
+              <label
                 className="block text-[20px] text-secondary mb-2.5"
-                htmlFor="pizza-size">Pizza Size
+                htmlFor="pizza-size"
+              >
+                Pizza Size
               </label>
               <div className="my-2.5 text-center">
                 <span>
                   <input
+                    className="peer hidden"
                     onChange={(e) => setPizzaSize(e.target.value as PizzaSize)}
                     checked={pizzaSize === "S"}
                     type="radio"
@@ -110,10 +115,16 @@ function Order() {
                     value="S"
                     id="pizza-s"
                   />
-                  <label htmlFor="pizza-s">Small</label>
+                  <label
+                    className="h-20 w-20 border border-[#999] bg-border text-[#999] inline-flex items-center justify-center rounded-[5px] cursor-pointer mx-3.75 mt-0 mb-2.5 peer-checked:bg-white peer-checked:text-[#333] peer-checked:border-[#333]"
+                    htmlFor="pizza-s"
+                  >
+                    Small
+                  </label>
                 </span>
                 <span>
                   <input
+                    className="peer hidden"
                     onChange={(e) => setPizzaSize(e.target.value as PizzaSize)}
                     checked={pizzaSize === "M"}
                     type="radio"
@@ -121,10 +132,16 @@ function Order() {
                     value="M"
                     id="pizza-m"
                   />
-                  <label htmlFor="pizza-m">Medium</label>
+                  <label
+                    className="h-20 w-20 border border-[#999] bg-border text-[#999] inline-flex items-center justify-center rounded-[5px] cursor-pointer mx-3.75 mt-0 mb-2.5 peer-checked:bg-white peer-checked:text-[#333] peer-checked:border-[#333]"
+                    htmlFor="pizza-m"
+                  >
+                    Medium
+                  </label>
                 </span>
                 <span>
                   <input
+                    className="peer hidden"
                     onChange={(e) => setPizzaSize(e.target.value as PizzaSize)}
                     checked={pizzaSize === "L"}
                     type="radio"
@@ -132,16 +149,20 @@ function Order() {
                     value="L"
                     id="pizza-l"
                   />
-                  <label htmlFor="pizza-l">Large</label>
+                  <label
+                    className="h-20 w-20 border border-[#999] bg-border text-[#999] inline-flex items-center justify-center rounded-[5px] cursor-pointer mx-3.75 mt-0 mb-2.5 peer-checked:bg-white peer-checked:text-[#333] peer-checked:border-[#333]"
+                    htmlFor="pizza-l"
+                  >
+                    Large
+                  </label>
                 </span>
               </div>
             </div>
-            <button 
-              className="btn"
-              type="submit">Add to Cart
+            <button className="btn" type="submit">
+              Add to Cart
             </button>
           </div>
-          {loading || !selectedPizza? (
+          {loading || !selectedPizza ? (
             <h3>LOADING …</h3>
           ) : (
             <div className="w-full ml-6.25 my-2.5 p-3.75 text-center">
@@ -155,7 +176,11 @@ function Order() {
           )}
         </form>
       </div>
-      {loading ? <h2>LOADING …</h2> : <Cart checkout={() => void checkout()} cart={cart} />}
+      {loading ? (
+        <h2>LOADING …</h2>
+      ) : (
+        <Cart checkout={() => void checkout()} cart={cart} />
+      )}
     </div>
   );
 }
