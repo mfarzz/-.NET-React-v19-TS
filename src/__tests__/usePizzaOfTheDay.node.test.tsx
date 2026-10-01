@@ -16,7 +16,7 @@ const testPizza = {
   sizes: { S: 12.25, M: 16.25, L: 20.25 },
 };
 
-test("to be null on initial load", async () => {
+test("to be null on initial load", () => {
   fetchMocker.mockResponseOnce(JSON.stringify(testPizza));
   const { result } = renderHook(() => usePizzaOfTheDay());
   expect(result.current).toBeNull();
