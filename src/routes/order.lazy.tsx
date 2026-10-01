@@ -60,11 +60,11 @@ function Order() {
   }
 
   return (
-    <div className="max-w-325 m-auto grid grid-cols-[2fr_1fr] gap-12.5">
-      <div className="w-full ml-[5%]">
+    <div className="max-w-325 m-auto grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-12.5">
+      <div className="w-full lg:ml-[5%]">
         <h2>Create Order</h2>
         <form
-          className="flex justify-between"
+          className="flex flex-col md:flex-row md:justify-between"
           onSubmit={(e) => {
             e.preventDefault();
             if (!selectedPizza || !price) {
@@ -76,8 +76,8 @@ function Order() {
             ]);
           }}
         >
-          <div className="my-2.5 text-center w-full p-3.75 border-r border-border">
-            <div className="my-2.5 text-center">
+          <div className="my-2.5 text-center w-full p-3.75 border-b border-border md:border-r md:border-b-0">
+            <div className="my-2.5 text-center w-full p-3.75 md:ml-6.25">
               <label
                 className="block text-[20px] text-secondary mb-2.5"
                 htmlFor="pizza-type">Pizza Type
@@ -95,7 +95,7 @@ function Order() {
                 ))}
               </select>
             </div>
-            <div className="my-2.5 text-center">
+            <div className="my-2.5 text-center w-full p-3.75 md:ml-6.25">
               <label 
                 className="block text-[20px] text-secondary mb-2.5"
                 htmlFor="pizza-size">Pizza Size
@@ -137,7 +137,7 @@ function Order() {
               </div>
             </div>
             <button 
-              className="inline-block cursor-pointer rounded-[5px] border border-primary bg-transparent px-3.75 py-1.25 font-pacifico text-[20px] text-primary hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:bg-border disabled:opacity-50"
+              className="btn"
               type="submit">Add to Cart
             </button>
           </div>

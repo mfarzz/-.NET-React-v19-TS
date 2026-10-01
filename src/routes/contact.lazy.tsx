@@ -38,22 +38,22 @@ function ContactRoute() {
           onSubmit={mutation.mutate}
         >
           <input
-            className="w-125 p-2 border-2 border-border rounded-[5px] mb-3.75 mt-3.75 focus:border-primary disabled:bg-[#999]"
+            className="my-3.75 w-[90%] max-w-125 p-2 border-2 border-border rounded-[5px] mb-3.75 mt-3.75 focus:border-primary disabled:bg-[#999]"
             name="name"
             placeholder="Name"
           />
           <input
-            className="w-125 p-2 border-2 border-border rounded-[5px] mb-3.75 mt-3.75 focus:border-primary disabled:bg-[#999]"
+            className="my-3.75 w-[90%] max-w-125 p-2 border-2 border-border rounded-[5px] mb-3.75 mt-3.75 focus:border-primary disabled:bg-[#999]"
             type="email"
             name="email"
             placeholder="Email"
           />
           <textarea
-            className="w-125 p-2 border-2 border-border rounded-[5px] mb-3.75 mt-3.75 min-h-50 focus:border-primary disabled:bg-[#999]"
+            className="my-3.75 w-[90%] max-w-125 p-2 border-2 border-border rounded-[5px] mb-3.75 mt-3.75 min-h-50 focus:border-primary disabled:bg-[#999]"
             placeholder="Message"
             name="message"
           ></textarea>
-          <button className="inline-block cursor-pointer rounded-[5px] border border-primary bg-transparent px-3.75 py-1.25 font-pacifico text-[20px] text-primary hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:bg-border disabled:opacity-50">
+          <button className="btn">
             Submit
           </button>
         </form>
