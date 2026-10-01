@@ -21,7 +21,7 @@ const Modal = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  return createPortal(<div>{children}</div>, elRef.current);
+  return createPortal(<div className="p-3.75 text-center rounded-[30px] bg-background">{children}</div>, elRef.current);
 };
 
 export default Modal;
