@@ -14,10 +14,10 @@ class ErrorBoundary extends Component<{children: ReactNode}> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="error-boundary">
+        <div className="min-h-100 text-center">
           <h2>Uh oh!</h2>
           <p>
-            There was an error with this listing. <Link to="/">Click here</Link>{" "}
+            There was an error with this listing. <Link className="text-primary underline" to="/">Click here</Link>{" "}
             to back to the home page.
           </p>
         </div>
