@@ -60,10 +60,11 @@ function Order() {
   }
 
   return (
-    <div className="order-page">
-      <div className="order">
+    <div className="max-w-325 m-auto grid grid-cols-[2fr_1fr] gap-12.5">
+      <div className="w-full ml-[5%]">
         <h2>Create Order</h2>
         <form
+          className="flex justify-between"
           onSubmit={(e) => {
             e.preventDefault();
             if (!selectedPizza || !price) {
@@ -75,10 +76,14 @@ function Order() {
             ]);
           }}
         >
-          <div>
-            <div>
-              <label htmlFor="pizza-type">Pizza Type</label>
+          <div className="my-2.5 text-center w-full p-3.75 border-r border-border">
+            <div className="my-2.5 text-center">
+              <label
+                className="block text-[20px] text-secondary mb-2.5"
+                htmlFor="pizza-type">Pizza Type
+              </label>
               <select
+                className="form-select block text-[16px] p-1.25 mb-7.5 w-full"
                 onChange={(e) => setPizzaType(e.target.value)}
                 name="pizza-type"
                 value={pizzaType}
@@ -90,9 +95,12 @@ function Order() {
                 ))}
               </select>
             </div>
-            <div>
-              <label htmlFor="pizza-size">Pizza Size</label>
-              <div>
+            <div className="my-2.5 text-center">
+              <label 
+                className="block text-[20px] text-secondary mb-2.5"
+                htmlFor="pizza-size">Pizza Size
+              </label>
+              <div className="my-2.5 text-center">
                 <span>
                   <input
                     onChange={(e) => setPizzaSize(e.target.value as PizzaSize)}
@@ -128,12 +136,15 @@ function Order() {
                 </span>
               </div>
             </div>
-            <button type="submit">Add to Cart</button>
+            <button 
+              className="inline-block cursor-pointer rounded-[5px] border border-primary bg-transparent px-3.75 py-1.25 font-pacifico text-[20px] text-primary hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:bg-border disabled:opacity-50"
+              type="submit">Add to Cart
+            </button>
           </div>
           {loading || !selectedPizza? (
             <h3>LOADING …</h3>
           ) : (
-            <div className="order-pizza">
+            <div className="w-full ml-6.25 my-2.5 p-3.75 text-center">
               <Pizza
                 name={selectedPizza.name}
                 description={selectedPizza.description}
