@@ -1,9 +1,8 @@
-import { expect, test } from "vitest";
 import { render } from "@testing-library/react";
+import { expect, test } from "vitest";
+import type { Pizza } from "../APIResponsesTypes";
 import Cart from "../Cart";
-import type {Pizza} from "../APIResponsesTypes";
-import type { CartItem } from "../contexts";
-import { CartContext } from "../contexts";
+import type { CartItem } from "../slice/cartSlice";
 
 const testPizza: Pizza = {
   id: "pepperoni",
@@ -27,9 +26,7 @@ test("snapshot with nothing in cart", () => {
 
 test("snapshot with some stuff in cart", () => {
   const { asFragment } = render(
-    <CartContext.Provider value={[threeItems, () => {}]}>
       <Cart cart={threeItems} checkout={() => {}} />
-    </CartContext.Provider>
   );
   expect(asFragment()).toMatchSnapshot();
 });

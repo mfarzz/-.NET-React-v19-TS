@@ -1,11 +1,18 @@
-import { useState, useEffect, useContext } from "react";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { CartContext } from "../contexts";
+import { useEffect, useState } from "react";
+import type { PizzaSize, Pizza as PizzaType } from "../APIResponsesTypes";
 import Cart from "../Cart";
 import Pizza from "../Pizza";
-import type { Pizza as PizzaType, PizzaSize } from "../APIResponsesTypes";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { addToCart, clearCart, selectCartItems } from "../slice/cartSlice";
+import {
+  setPizzaType,
+  setPizzaSize,
+  selectPizzaType,
+  selectPizzaSize,
+  clearOrder
+} from "../slice/orderSlice";
 
-// feel free to change en-US / USD to your locale
 const intl = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -16,11 +23,13 @@ export const Route = createLazyFileRoute("/order")({
 });
 
 function Order() {
-  const [pizzaType, setPizzaType] = useState("pepperoni");
-  const [pizzaSize, setPizzaSize] = useState<PizzaSize>("M");
   const [pizzaTypes, setPizzaTypes] = useState<PizzaType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useContext(CartContext);
+  const cart = useAppSelector(selectCartItems);
+  const pizzaType = useAppSelector(selectPizzaType);
+  const pizzaSize = useAppSelector(selectPizzaSize);
+
+  const dispatch = useAppDispatch();
 
   async function checkout() {
     setLoading(true);
@@ -34,8 +43,8 @@ function Order() {
         cart,
       }),
     });
-
-    setCart([]);
+    dispatch(clearOrder());
+    dispatch(clearCart());
     setLoading(false);
   }
 
@@ -59,6 +68,10 @@ function Order() {
     setLoading(false);
   }
 
+  const handlePizzaSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setPizzaSize(e.target.value as PizzaSize));
+  };
+
   return (
     <div className="max-w-325 m-auto grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-12.5">
       <div className="w-full lg:ml-[5%]">
@@ -70,14 +83,13 @@ function Order() {
             if (!selectedPizza || !price) {
               return;
             }
-            setCart([
-              ...cart,
-              { pizza: selectedPizza, size: pizzaSize, price },
-            ]);
+            dispatch(
+              addToCart({ pizza: selectedPizza, size: pizzaSize, price }),
+            );
           }}
         >
           <div className="my-2.5 text-center w-full p-3.75 border-b border-border md:border-r md:border-b-0">
-            <div className="my-2.5 text-center w-full p-3.75 md:ml-6.25">
+            <div className="text-center w-full p-3.75">
               <label
                 className="block text-[20px] text-secondary mb-2.5"
                 htmlFor="pizza-type"
@@ -85,8 +97,8 @@ function Order() {
                 Pizza Type
               </label>
               <select
-                className="form-select block text-[16px] p-1.25 mb-7.5 w-full"
-                onChange={(e) => setPizzaType(e.target.value)}
+                className="form-select block text-[16px] p-1.25 w-full"
+                onChange={(e) => dispatch(setPizzaType(e.target.value))}
                 name="pizza-type"
                 value={pizzaType}
               >
@@ -97,7 +109,7 @@ function Order() {
                 ))}
               </select>
             </div>
-            <div className="my-2.5 text-center w-full p-3.75 md:ml-6.25">
+            <div className="my-2.5 text-center w-full p-3.75">
               <label
                 className="block text-[20px] text-secondary mb-2.5"
                 htmlFor="pizza-size"
@@ -108,7 +120,7 @@ function Order() {
                 <span>
                   <input
                     className="peer hidden"
-                    onChange={(e) => setPizzaSize(e.target.value as PizzaSize)}
+                    onChange={handlePizzaSizeChange}
                     checked={pizzaSize === "S"}
                     type="radio"
                     name="pizza-size"
@@ -125,7 +137,7 @@ function Order() {
                 <span>
                   <input
                     className="peer hidden"
-                    onChange={(e) => setPizzaSize(e.target.value as PizzaSize)}
+                    onChange={handlePizzaSizeChange}
                     checked={pizzaSize === "M"}
                     type="radio"
                     name="pizza-size"
@@ -142,7 +154,7 @@ function Order() {
                 <span>
                   <input
                     className="peer hidden"
-                    onChange={(e) => setPizzaSize(e.target.value as PizzaSize)}
+                    onChange={handlePizzaSizeChange}
                     checked={pizzaSize === "L"}
                     type="radio"
                     name="pizza-size"
@@ -158,7 +170,7 @@ function Order() {
                 </span>
               </div>
             </div>
-            <button className="btn" type="submit">
+            <button className="btn" type="submit" >
               Add to Cart
             </button>
           </div>

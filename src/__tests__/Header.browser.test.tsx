@@ -1,14 +1,15 @@
-import { render } from "vitest-browser-react";
-import { expect, test } from "vitest";
-import Header from "../Header";
 import {
   RouterProvider,
-  createRouter,
   createRootRoute,
+  createRouter,
 } from "@tanstack/react-router";
-import { CartContext } from "../contexts";
-import type { CartItem } from "../contexts";
+import { Provider } from "react-redux";
+import { expect, test } from "vitest";
+import { render } from "vitest-browser-react";
 import type { Pizza } from "../APIResponsesTypes";
+import Header from "../Header";
+import type { CartItem } from "../slice/cartSlice";
+import { makeStore } from "../store";
 
 const testPizza: Pizza = {
   id: "pepperoni",
@@ -28,16 +29,16 @@ const threeItems: CartItem[] = [
 test("correctly renders a header with a zero cart count", async () => {
   const rootRoute = createRootRoute({
     component: () => (
-      <CartContext.Provider value={[[], () => {}]}>
+      <Provider store={makeStore()}>
         <Header />
-      </CartContext.Provider>
+      </Provider>
     ),
   });
 
   const router = createRouter({ routeTree: rootRoute });
   const screen = render(
-  <RouterProvider<typeof router> router={router}></RouterProvider>,
-);
+    <RouterProvider<typeof router> router={router}></RouterProvider>,
+  );
 
   const itemsInCart = screen.getByTestId("cart-number");
 
@@ -48,16 +49,16 @@ test("correctly renders a header with a zero cart count", async () => {
 test("correctly renders a header with a three cart count", async () => {
   const rootRoute = createRootRoute({
     component: () => (
-      <CartContext.Provider value={[threeItems, () => {}]}>
+      <Provider store={makeStore({ cart: { items: threeItems } })}>
         <Header />
-      </CartContext.Provider>
+      </Provider>
     ),
   });
 
   const router = createRouter({ routeTree: rootRoute });
   const screen = render(
-  <RouterProvider<typeof router> router={router}></RouterProvider>,
-);
+    <RouterProvider<typeof router> router={router}></RouterProvider>,
+  );
 
   const itemsInCart = screen.getByTestId("cart-number");
 
