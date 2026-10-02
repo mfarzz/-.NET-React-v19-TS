@@ -1,10 +1,11 @@
-import { skipToken, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import getPastOrder from "../api/getPastOrder";
 import getPastOrders from "../api/getPastOrders";
 import ErrorBoundary from "../pages/ErrorBoundary";
 import Modal from "../pages/Modal";
+import { useQuery } from "@tanstack/react-query";
+import { skipToken } from "@reduxjs/toolkit/query/react";
+import { useGetPastOrderQuery, useGetPastOrdersQuery } from "../api/pizzaApi";
 
 export const Route = createLazyFileRoute("/past")({
   component: ErrorBoundaryWrappedPastOrderRoutes,
@@ -26,26 +27,25 @@ function ErrorBoundaryWrappedPastOrderRoutes() {
 function PastOrdersRoute() {
   const [page, setPage] = useState(1);
   const [focusedOrder, setFocusedOrder] = useState<number>();
-  const { isLoading, data } = useQuery({
-    queryKey: ["past-orders", page],
-    queryFn: () => getPastOrders(page),
-    staleTime: 30000,
-  });
+  const { data: pastOrderData, isLoading: isLoadingPastOrder } =
+    useGetPastOrderQuery(focusedOrder ?? skipToken);
 
-  const { isLoading: isLoadingPastOrder, data: pastOrderData } = useQuery({
-    queryKey: ["past-order", focusedOrder],
-    queryFn: focusedOrder ? () => getPastOrder(focusedOrder) : skipToken,
-    staleTime: 24 * 60 * 60 * 1000, // one day in milliseconds,
-  });
+  const {
+    data: pastOrdersData,
+    isLoading: isLoadingPastOrders,
+    isFetching: isFetchingPastOrders,
+  } = useGetPastOrdersQuery(page ?? skipToken);
 
-  if (isLoading) {
+  const isLoadingOrders = isLoadingPastOrders || isFetchingPastOrders;
+
+  if (isLoadingOrders) {
     return (
       <div className="min-h-162.5 max-w-225 w-[90%] my-0 mx-auto">
         <h2>LOADING …</h2>
       </div>
     );
   }
-  if (!data) {
+  if (!pastOrdersData) {
     throw new Error("Past orders could not be loaded");
   }
   return (
@@ -59,10 +59,16 @@ function PastOrdersRoute() {
           </tr>
         </thead>
         <tbody>
-          {data.map((order) => (
-            <tr className="border-b border-[#dddddd] even:bg-[#f6fef0] last-of-type:border-b-2 last-of-type:border-secondary" key={order.order_id}>
+          {pastOrdersData.map((order) => (
+            <tr
+              className="border-b border-[#dddddd] even:bg-[#f6fef0] last-of-type:border-b-2 last-of-type:border-secondary"
+              key={order.order_id}
+            >
               <td className="py-3 px-3.75 text-center">
-                <button onClick={() => setFocusedOrder(order.order_id)}>
+                <button
+                  className="btn"
+                  onClick={() => setFocusedOrder(order.order_id)}
+                >
                   {order.order_id}
                 </button>
               </td>
@@ -73,11 +79,19 @@ function PastOrdersRoute() {
         </tbody>
       </table>
       <div className="flex items-center justify-evenly">
-        <button className="btn" disabled={page <= 1} onClick={() => setPage(page - 1)}>
+        <button
+          className="btn"
+          disabled={page <= 1}
+          onClick={() => setPage(page - 1)}
+        >
           Previous
         </button>
         <div className="font-pacifico text-primary text-[20px]">{page}</div>
-        <button className="btn" disabled={data.length < 10} onClick={() => setPage(page + 1)}>
+        <button
+          className="btn"
+          disabled={pastOrdersData?.length < 10}
+          onClick={() => setPage(page + 1)}
+        >
           Next
         </button>
       </div>
@@ -98,15 +112,28 @@ function PastOrdersRoute() {
               </thead>
               <tbody>
                 {pastOrderData?.orderItems.map((pizza) => (
-                  <tr className="border-b border-[#dddddd] even:bg-[#f6fef0] last-of-type:border-b-2 last-of-type:border-secondary" key={`${pizza.pizzaTypeId}_${pizza.size}`}>
+                  <tr
+                    className="border-b border-[#dddddd] even:bg-[#f6fef0] last-of-type:border-b-2 last-of-type:border-secondary"
+                    key={`${pizza.pizzaTypeId}_${pizza.size}`}
+                  >
                     <td className="py-3 px-3.75 text-center">
-                      <img className="w-12.5" src={pizza.image} alt={pizza.name} />
+                      <img
+                        className="w-12.5"
+                        src={pizza.image}
+                        alt={pizza.name}
+                      />
                     </td>
                     <td className="py-3 px-3.75 text-center">{pizza.name}</td>
                     <td className="py-3 px-3.75 text-center">{pizza.size}</td>
-                    <td className="py-3 px-3.75 text-center">{pizza.quantity}</td>
-                    <td className="py-3 px-3.75 text-center">{intl.format(pizza.price)}</td>
-                    <td className="py-3 px-3.75 text-center">{intl.format(pizza.total)}</td>
+                    <td className="py-3 px-3.75 text-center">
+                      {pizza.quantity}
+                    </td>
+                    <td className="py-3 px-3.75 text-center">
+                      {intl.format(pizza.price)}
+                    </td>
+                    <td className="py-3 px-3.75 text-center">
+                      {intl.format(pizza.total)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -114,7 +141,9 @@ function PastOrdersRoute() {
           ) : (
             <p>Loading …</p>
           )}
-          <button className="btn" onClick={() => setFocusedOrder(undefined)}>Close</button>
+          <button className="btn" onClick={() => setFocusedOrder(undefined)}>
+            Close
+          </button>
         </Modal>
       ) : null}
     </div>

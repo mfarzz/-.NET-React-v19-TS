@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { Pizza } from "../types/APIResponsesTypes";
+import type { Pizza, PastOrderDetail, PastOrder } from "../types/APIResponsesTypes";
+import getPastOrders from "./getPastOrders";
 
 export const pizzaApi = createApi({
   reducerPath: "pizzaApi",
@@ -11,7 +12,19 @@ export const pizzaApi = createApi({
     getPizzaOfTheDay: build.query<Pizza, void>({
       query: () => "pizza-of-the-day",
     }),
+    getPastOrder: build.query<PastOrderDetail, number>({
+      query: (order) => `past-order/${order}`,
+      keepUnusedDataFor: 24 * 60 * 60,
+    }),
+    getPastOrders: build.query<PastOrder[], number>({
+      query: (page) => `past-orders?page=${page}`,
+    }),
   }),
 });
 
-export const { useGetPizzasQuery, useGetPizzaOfTheDayQuery } = pizzaApi;
+export const {
+  useGetPizzasQuery,
+  useGetPizzaOfTheDayQuery,
+  useGetPastOrderQuery,
+  useGetPastOrdersQuery,
+} = pizzaApi;
