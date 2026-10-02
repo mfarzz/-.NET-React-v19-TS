@@ -14,10 +14,10 @@ const PizzaOfTheDay = () => {
   }
 
   return (
-    <div className="border-t border-border mt-12.5 w-full">
+    <div className="border-t border-border mt-12.5 pt-12.5 pb-7.5 px-4 max-w-175 mx-auto">
       <h2 className="text-center">Pizza of the Day</h2>
-      <div className="flex items-center justify-center">
-        <div className="mr-7.5 text-center leading-loose">
+      <div className="flex flex-col md:flex-row items-center justify-center">
+        <div className="md:mr-7.5 text-center leading-loose">
           <h3>{pizzaOfTheDay.name}</h3>
           <p>{pizzaOfTheDay.description}</p>
           <p>

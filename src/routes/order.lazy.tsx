@@ -165,7 +165,7 @@ function Order() {
           {loading || !selectedPizza ? (
             <h3>LOADING …</h3>
           ) : (
-            <div className="w-full ml-6.25 my-2.5 p-3.75 text-center">
+            <div className="w-full my-2.5 p-3.75 text-center">
               <Pizza
                 name={selectedPizza.name}
                 description={selectedPizza.description}
