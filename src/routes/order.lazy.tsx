@@ -1,17 +1,18 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import type { PizzaSize, Pizza as PizzaType } from "../APIResponsesTypes";
-import Cart from "../Cart";
-import Pizza from "../Pizza";
-import { useAppDispatch, useAppSelector } from "../hooks";
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import Cart from "../pages/Cart";
+import Pizza from "../pages/Pizza";
 import { addToCart, clearCart, selectCartItems } from "../slice/cartSlice";
 import {
-  setPizzaType,
-  setPizzaSize,
-  selectPizzaType,
+  clearOrder,
   selectPizzaSize,
-  clearOrder
+  selectPizzaType,
+  setPizzaSize,
+  setPizzaType,
 } from "../slice/orderSlice";
+import type { PizzaSize, Pizza as PizzaType } from "../types/APIResponsesTypes";
+import { useGetPizzasQuery } from "../api/pizzaApi";
 
 const intl = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -23,8 +24,11 @@ export const Route = createLazyFileRoute("/order")({
 });
 
 function Order() {
-  const [pizzaTypes, setPizzaTypes] = useState<PizzaType[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: pizzaTypes = [], isLoading: isLoadingPizzas } =
+    useGetPizzasQuery();
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const loading = isLoadingPizzas || isCheckingOut;
+
   const cart = useAppSelector(selectCartItems);
   const pizzaType = useAppSelector(selectPizzaType);
   const pizzaSize = useAppSelector(selectPizzaSize);
@@ -32,20 +36,23 @@ function Order() {
   const dispatch = useAppDispatch();
 
   async function checkout() {
-    setLoading(true);
+    setIsCheckingOut(true);
 
-    await fetch("/api/order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        cart,
-      }),
-    });
-    dispatch(clearOrder());
-    dispatch(clearCart());
-    setLoading(false);
+    try {
+      await fetch("/api/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cart,
+        }),
+      });
+      dispatch(clearOrder());
+      dispatch(clearCart());
+    } finally {
+      setIsCheckingOut(false);
+    }
   }
 
   let price: string | undefined;
@@ -55,17 +62,6 @@ function Order() {
     price = selectedPizza
       ? intl.format(selectedPizza.sizes[pizzaSize])
       : undefined;
-  }
-
-  useEffect(() => {
-    void fetchPizzaTypes();
-  }, []);
-
-  async function fetchPizzaTypes() {
-    const pizzasRes = await fetch("/api/pizzas");
-    const pizzasJson = (await pizzasRes.json()) as PizzaType[];
-    setPizzaTypes(pizzasJson);
-    setLoading(false);
   }
 
   const handlePizzaSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -170,7 +166,7 @@ function Order() {
                 </span>
               </div>
             </div>
-            <button className="btn" type="submit" >
+            <button className="btn" type="submit">
               Add to Cart
             </button>
           </div>

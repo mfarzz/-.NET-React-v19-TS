@@ -1,6 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import type { Pizza, PizzaSize } from "../APIResponsesTypes";
+import type { Pizza, PizzaSize } from "../types/APIResponsesTypes";
 
 export interface CartItem {
   pizza: Pizza;

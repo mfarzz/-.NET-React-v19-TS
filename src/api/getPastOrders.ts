@@ -1,4 +1,4 @@
-import type { PastOrder } from "../APIResponsesTypes";
+import type { PastOrder } from "../types/APIResponsesTypes";
 
 export default async function getPastOrders(
   page: number,

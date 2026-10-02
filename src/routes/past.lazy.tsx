@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { useQuery, skipToken } from "@tanstack/react-query";
+import { skipToken, useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import getPastOrders from "../api/getPastOrders";
+import { useState } from "react";
 import getPastOrder from "../api/getPastOrder";
-import Modal from "../Modal";
-import ErrorBoundary from "../ErrorBoundary";
+import getPastOrders from "../api/getPastOrders";
+import ErrorBoundary from "../pages/ErrorBoundary";
+import Modal from "../pages/Modal";
 
 export const Route = createLazyFileRoute("/past")({
   component: ErrorBoundaryWrappedPastOrderRoutes,

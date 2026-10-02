@@ -1,4 +1,4 @@
-import type { CartItem } from "./slice/cartSlice";
+import type { CartItem } from "../slice/cartSlice";
 
 interface Props {
   cart: CartItem[];

@@ -6,10 +6,10 @@ import {
 import { Provider } from "react-redux";
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
-import type { Pizza } from "../APIResponsesTypes";
-import Header from "../Header";
+import Header from "../pages/Header";
 import type { CartItem } from "../slice/cartSlice";
 import { makeStore } from "../store";
+import type { Pizza } from "../types/APIResponsesTypes";
 
 const testPizza: Pizza = {
   id: "pepperoni",

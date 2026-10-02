@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { useAppSelector } from "./hooks";
-import { selectCartCount } from "./slice/cartSlice";
+import { selectCartCount } from "../slice/cartSlice";
+import { useAppSelector } from "../hooks/hooks";
 
 
 export default function Header() {

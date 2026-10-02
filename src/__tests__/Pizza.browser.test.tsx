@@ -1,6 +1,6 @@
-import { render } from "vitest-browser-react";
 import { expect, test } from "vitest";
-import Pizza from "../Pizza";
+import { render } from "vitest-browser-react";
+import Pizza from "../pages/Pizza";
 
 test("alt text renders on image", async () => {
   const name = "My Favorite Pizza";

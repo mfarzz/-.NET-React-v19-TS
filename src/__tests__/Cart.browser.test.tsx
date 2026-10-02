@@ -1,8 +1,8 @@
 import { render } from "@testing-library/react";
 import { expect, test } from "vitest";
-import type { Pizza } from "../APIResponsesTypes";
-import Cart from "../Cart";
+import Cart from "../pages/Cart";
 import type { CartItem } from "../slice/cartSlice";
+import type { Pizza } from "../types/APIResponsesTypes";
 
 const testPizza: Pizza = {
   id: "pepperoni",
