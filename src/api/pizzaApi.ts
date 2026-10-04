@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { Pizza, PastOrderDetail, PastOrder } from "../types/APIResponsesTypes";
-import getPastOrders from "./getPastOrders";
+
 
 export const pizzaApi = createApi({
   reducerPath: "pizzaApi",

@@ -1,9 +1,7 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import getPastOrders from "../api/getPastOrders";
 import ErrorBoundary from "../pages/ErrorBoundary";
 import Modal from "../pages/Modal";
-import { useQuery } from "@tanstack/react-query";
 import { skipToken } from "@reduxjs/toolkit/query/react";
 import { useGetPastOrderQuery, useGetPastOrdersQuery } from "../api/pizzaApi";
 
