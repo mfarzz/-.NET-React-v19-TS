@@ -1,7 +1,6 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import type { SubmitEvent } from "react";
 import { usePlaceContactMutation } from "../api/pizzaApi";
-import type { Contact } from "../types/APIResponsesTypes";
 
 function getString(formData: FormData, key: string): string {
   const value = formData.get(key);
@@ -15,15 +14,15 @@ export const Route = createLazyFileRoute("/contact")({
 function ContactRoute() {
   const [ placeContact, { isSuccess, isError}] = usePlaceContactMutation();
 
-  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const contact : Contact = {
+    const contact = {
       name: getString(formData, "name"),
       email: getString(formData, "email"),
       message: getString(formData, "message"),
     };
-    await placeContact(contact);
+    void placeContact(contact);
   }
 
   return (
