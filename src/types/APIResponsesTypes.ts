@@ -31,3 +31,9 @@ export interface PastOrderDetail {
   order: PastOrder & { total: number };
   orderItems: PastOrderItem[];
 }
+
+export interface Contact {
+  name: string;
+  email: string;
+  message: string;
+}
